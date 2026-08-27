@@ -1,14 +1,58 @@
 ---
 
-- name: Install debian specific package_facts dependency
+- name: Include server setup
   become: true
-  when: ansible_distribution == "Debian"
-  ansible.builtin.package:
-    name: python-apt-common
+  ansible.builtin.import_role:
+    name: freeipa.ansible_freeipa.ipaserver
+  vars:
     state: present
+    ipaadmin_password: "SomeADMINpassword"
+    ipadm_password: "SomeADMINpassword"
+    ipaserver_setup_dns: false
+    ipaserver__dns_over_tls: false
+    ipaserver_setup_firewalld: false
+    ipaserver_setup_kra: false
+    ipaclient_no_ntp: true
+    ipaserver_domain: "molecule.com"
+    ipaserver_realm: "MOLECULE.COM"
+    ipaserver_hostname: "{{ inventory_hostname }}"
 
-# INFO This task may be obsolete for your use-case
-- name: Gather package facts
-  ansible.builtin.package_facts:
+- name: Set initial global defaults
+  freeipa.ansible_freeipa.ipaconfig:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    defaultshell: /bin/bash
+    homedirectory: /home
+    ipaapi_context: server
+
+- name: Create users
+  freeipa.ansible_freeipa.ipauser:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    users: "{{ freeipa_config_users }}"
+    update_password: on_create
+    ipaapi_context: server
+
+- name: Create user groups
+  freeipa.ansible_freeipa.ipagroup:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    groups: "{{ freeipa_config_user_groups }}"
+    ipaapi_context: server
+
+- name: Configure sudo rules
+  freeipa.ansible_freeipa.ipasudorule:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    sudorules: "{{ freeipa_config_sudo_rules }}"
+    ipaapi_context: server
+
+- name: Set global defaults after config
+  freeipa.ansible_freeipa.ipaconfig:
+    defaultgroup: users
+    ipaadmin_password: "{{ freeipa_config_password }}"
+
+- name: Set global password policy
+  freeipa.ansible_freeipa.ipapwpolicy:
+    name: global_policy
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    maxlife: 180
+    ipaapi_context: server
 
 ...

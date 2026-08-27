@@ -1,8 +1,11 @@
 ---
 
-- name: Remove unused dependencies
+- name: Uninstall FreeIPA server
   become: true
-  ansible.builtin.package:
-    autoremove: true
+  ansible.builtin.command:
+    cmd: /usr/sbin/ipa-server-install --uninstall -U
+  register: ipa_uninstall
+  failed_when: ipa_uninstall.rc not in [0, 1]
+  changed_when: ipa_uninstall.rc == 0
 
 ...
