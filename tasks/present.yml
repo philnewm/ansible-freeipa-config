@@ -17,6 +17,11 @@
     ipaserver_realm: "MOLECULE.COM"
     ipaserver_hostname: "{{ inventory_hostname }}"
 
+- name: Include vars file if provided
+  when: freeipa_config_vars_file | length > 0
+  ansible.builtin.include_vars:
+    file: "{{ freeipa_config_vars_file }}"
+
 - name: Set initial global defaults
   freeipa.ansible_freeipa.ipaconfig:
     ipaadmin_password: "{{ freeipa_config_password }}"
