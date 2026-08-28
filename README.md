@@ -1,6 +1,6 @@
 # Freeipa-config-Role
 
-[![Alma9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/alma9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/alma9-ci-caller.yml)  [![Rocky9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/rocky9-ci-caller.yml)  [![CentOSStream9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/centosstream9-ci-caller.yml)  [![Debian12-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/debian12-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/debian12-ci-caller.yml)  [![Ubuntu2204-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/ubuntu2204-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/ubuntu2204-ci-caller.yml)
+[![Alma9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/alma9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/alma9-ci-caller.yml)  [![Rocky9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/rocky9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/rocky9-ci-caller.yml)  [![CentOSStream9-CI](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/centosstream9-ci-caller.yml/badge.svg)](https://github.com/philnewm/ansible-freeipa-config/actions/workflows/centosstream9-ci-caller.yml)
 
 Role description
 
@@ -12,10 +12,6 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
 📦 ansible-freeipa-config
  ┣ 📂 defaults
  ┃ ┗ 📜 main.yml
- ┣ 📂 files
- ┃ ┗ 📜 file_placeholder.yml
- ┣ 📂 handlers
- ┃ ┗ 📜 main.yml
  ┣ 📂 meta
  ┃ ┗ 📜 main.yml
  ┣ 📂 molecule
@@ -23,16 +19,12 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
  ┃   ┗ 📜, 📜, 📜, scenario_files
  ┣ 📂 tasks
  ┃ ┣ 📜 main.yml
- ┃ ┣ 📜 present.yml
- ┃ ┣ 📜 dependencies.yml
  ┃ ┣ 📜 absent.yml
- ┃ ┗ 📜 init.yml
- ┣ 📂 templates
- ┃ ┗ ⛩️ template.j2
+ ┃ ┣ 📜 present.yml
+ ┃ ┗ 📜 tests.yml
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
- ┗ 📓 requirements.txt
  ┗ 📓 requirements.yml
 
 ```
