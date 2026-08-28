@@ -1,3 +1,35 @@
 ---
 
+- name: Query users
+  freeipa.ansible_freeipa.ipauser:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    state: query
+    ipaapi_context: server
+  register: user_query_result
+
+- name: Verify default users are present
+  loop: "{{ freeipa_config_users }}"
+  loop_control:
+    loop_var: ipa_user
+    label: ipa_user.name
+  ansible.builtin.assert:
+    that: ipa_user.name in user_query_result.user.keys()
+    quiet: true
+
+- name: Query groups
+  freeipa.ansible_freeipa.ipagroup:
+    ipaadmin_password: "{{ freeipa_config_password }}"
+    state: query
+    ipaapi_context: server
+  register: user_group_query_result
+
+- name: Verify default user groups are present
+  loop: "{{ freeipa_config_user_groups }}"
+  loop_control:
+    loop_var: ipa_user_group
+    label: ipa_user_group.name
+  ansible.builtin.assert:
+    that: ipa_user_group.name in user_group_query_result.group.keys()
+    quiet: true
+
 ...

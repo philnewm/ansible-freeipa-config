@@ -1,5 +1,40 @@
 ---
 
 state: present
+freeipa_config_password: "SomeADMINpassword"
+freeipa_config_users:
+  - name: defatest
+    first: Default
+    last: Testname
+    uid: 10001
+    password: test_1234!
+    homedir: /home/defatest
+  - name: guestest
+    first: Guest
+    last: Testman
+    uid: 10002
+    password: test_1234!
+    homedir: /home/guestest
+freeipa_config_user_groups:
+  - name: "users"
+    gid: 1024
+    description: Default user group
+    posix: true
+    user:
+      - defatest
+      - guestest
+  - name: "sysadmins"
+    gid: 2048
+    description: Group for admins
+    posix: true
+    user: [defatest]
+freeipa_config_sudo_rules:
+  - name: sysadmin_sudo
+    description: Full sudo access for sys admins
+    group: [sysadmins]
+    cmdcategory: all
+    hostcategory: all
+    runasgroupcategory: all
+    runasusercategory: all
 
 ...

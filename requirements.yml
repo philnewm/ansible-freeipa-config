@@ -1,6 +1,8 @@
-# Add ansible role requirements
-collections:
-  - community.general
+---
 
-# roles:
-#   - name: <role.name>
+collections:
+  - name: community.general
+  - name: freeipa.ansible_freeipa
+    version: 1.17.0
+
+...
