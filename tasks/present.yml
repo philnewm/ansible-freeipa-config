@@ -1,21 +1,18 @@
 ---
 
-- name: Include server setup
-  become: true
-  ansible.builtin.import_role:
-    name: freeipa.ansible_freeipa.ipaserver
-  vars:
-    state: present
-    ipaadmin_password: "SomeADMINpassword"
-    ipadm_password: "SomeADMINpassword"
-    ipaserver_setup_dns: false
-    ipaserver__dns_over_tls: false
-    ipaserver_setup_firewalld: false
-    ipaserver_setup_kra: false
-    ipaclient_no_ntp: true
-    ipaserver_domain: "molecule.com"
-    ipaserver_realm: "MOLECULE.COM"
-    ipaserver_hostname: "{{ inventory_hostname }}"
+- name: Verify FreeIPA authentication
+  freeipa.ansible_freeipa.ipaconfig:
+    ipaadmin_principal: "{{ freeipa_config_admin_principal }}"
+    ipaadmin_password: "{{ freeipa_config_password }}"
+  register: ipa_test
+  changed_when: false
+  no_log: true
+
+- name: Verify version output
+  ansible.builtin.assert:
+    that:
+      - not ipa_test.failed
+      - ipa_test.config.ca_renewal_master_server == inventory_hostname
 
 - name: Include vars file if provided
   when: freeipa_config_vars_file | length > 0
@@ -25,8 +22,8 @@
 - name: Set initial global defaults
   freeipa.ansible_freeipa.ipaconfig:
     ipaadmin_password: "{{ freeipa_config_password }}"
-    defaultshell: /bin/bash
-    homedirectory: /home
+    defaultshell: "{{ freeipa_config_defaults.defaultshell }}"
+    homedirectory: "{{ freeipa_config_defaults.homedirectory }}"
     ipaapi_context: server
 
 - name: Create users
@@ -50,7 +47,7 @@
 
 - name: Set global defaults after config
   freeipa.ansible_freeipa.ipaconfig:
-    defaultgroup: users
+    defaultgroup: "{{ freeipa_config_defaults.defaultgroup }}"
     ipaadmin_password: "{{ freeipa_config_password }}"
 
 - name: Set global password policy
