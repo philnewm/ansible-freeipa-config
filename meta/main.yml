@@ -20,4 +20,20 @@ galaxy_info:
   galaxy_tags:
     - freeipa
     - idm
-dependencies: []
+dependencies:
+  - role: freeipa.ansible_freeipa.ipaserver
+    vars:
+      ipaadmin_password: "SomeADMINpassword"
+      ipadm_password: "SomeADMINpassword"
+      ipaserver_setup_dns: false
+      ipaserver__dns_over_tls: false
+      ipaserver_setup_firewalld: false
+      ipaserver_setup_kra: false
+      ipaclient_no_ntp: true
+      ipaserver_domain: "molecule.com"
+      ipaserver_realm: "MOLECULE.COM"
+      ipaserver_hostname: "{{ inventory_hostname }}"
+      # Work around ansible-core evaluating delegate_to before `when`.
+      # known regression https://github.com/ansible/ansible/issues/85849
+      # This value is never actually used because remove_from_domain is false.
+      ipaserver_remove_on_server: "{{ inventory_hostname }}"
