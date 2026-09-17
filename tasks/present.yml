@@ -57,4 +57,21 @@
     maxlife: 180
     ipaapi_context: server
 
+- name: Handle acme
+  become: true
+  when: freeipa_config_acme_enabled | bool
+  block:
+    - name: Check FreeIPA ACME status
+      ansible.builtin.command:
+        cmd: ipa-acme-manage status
+      register: ipa_acme_status
+      changed_when: false
+
+    - name: Enable FreeIPA ACME service
+      when: "'ACME is disabled' in ipa_acme_status.stdout"
+      ansible.builtin.command:
+        cmd: ipa-acme-manage enable
+      register: acme_enabled
+      changed_when: "'The ipa-acme-manage command was successful' in acme_enabled.stdout"
+
 ...
